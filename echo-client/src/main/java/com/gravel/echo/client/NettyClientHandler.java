@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.gravel.echo.client.conection.ConnectManage;
 import com.gravel.echo.common.entity.Request;
 import com.gravel.echo.common.entity.Response;
+import com.gravel.echo.common.utils.SerializerUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -51,7 +52,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        Response response = JSON.parseObject(msg.toString(), Response.class);
+        Response response = SerializerUtil.parseObject(msg.toString(), Response.class);
         String requestId = response.getRequestId();
         SynchronousQueue<Object> queue = queueMap.get(requestId);
         queue.put(response);

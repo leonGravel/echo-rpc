@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.gravel.echo.common.entity.Request;
 import com.gravel.echo.common.entity.Response;
+import com.gravel.echo.common.utils.SerializerUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -45,7 +46,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        Request request = JSON.parseObject(msg.toString(), Request.class);
+        Request request = SerializerUtil.parseObject(msg.toString(), Request.class);
 
         if ("heartBeat".equals(request.getMethodName())) {
             log.info("客户端心跳信息..." + ctx.channel().remoteAddress());
@@ -112,9 +113,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 } else if (Collection.class.isAssignableFrom(paramType)) {
                     newParameters[i] = JSONArray.parseArray(parameters[i].toString(), Object.class);
                 } else if (Map.class.isAssignableFrom(paramType)) {
-                    newParameters[i] = JSON.parseObject(parameters[i].toString(), Map.class);
+                    newParameters[i] = SerializerUtil.parseObject(parameters[i].toString(), Map.class);
                 } else {
-                    newParameters[i] = JSON.parseObject(parameters[i].toString(), parameterTypes[i]);
+                    newParameters[i] = SerializerUtil.parseObject(parameters[i].toString(), parameterTypes[i]);
                 }
             }
             return newParameters;

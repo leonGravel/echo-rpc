@@ -9,4 +9,8 @@ package com.gravel.echo.common.constants;
  **/
 public class EchoConstants {
     public static final String ZK_REGISTRY_PATH = "/echo-rpc";
+    public static final String SERIAL_TYPE_JSON = "json";
+    public static final String SERIAL_TYPE_KRYO = "kryo";
+
+
 }
