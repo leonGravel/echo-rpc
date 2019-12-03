@@ -1,4 +1,4 @@
-package com.gravel.echo.common.codec;
+package com.gravel.echo.common.codec.json;
 
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
@@ -25,7 +25,6 @@ public class JSONDecoder extends LengthFieldBasedFrameDecoder {
         int data_len = decode.readableBytes();
         byte[] bytes = new byte[data_len];
         decode.readBytes(bytes);
-        Object parse = JSON.parse(bytes);
-        return parse;
+        return JSON.parse(bytes);
     }
 }

@@ -1,8 +1,8 @@
 package com.gravel.echo.server;
 
 import com.gravel.echo.common.annotation.RpcService;
-import com.gravel.echo.common.codec.JSONDecoder;
-import com.gravel.echo.common.codec.JSONEncoder;
+import com.gravel.echo.common.codec.json.JSONDecoder;
+import com.gravel.echo.common.codec.json.JSONEncoder;
 import com.gravel.echo.server.registry.ServiceRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;

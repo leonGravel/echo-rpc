@@ -43,7 +43,7 @@ public class RpcFactory<T> implements InvocationHandler {
 
         Response response = JSON.parseObject(result.toString(), Response.class);
         if (response.getCode()==1){
-            throw new Exception(response.getError_msg());
+            throw new Exception(response.getErrorMsg());
         }
         if (returnType.isPrimitive() || String.class.isAssignableFrom(returnType)){
             return response.getData();

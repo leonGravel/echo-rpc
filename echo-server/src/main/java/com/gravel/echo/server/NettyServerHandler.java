@@ -59,7 +59,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             } catch (Throwable e) {
                 e.printStackTrace();
                 response.setCode(1);
-                response.setError_msg(e.toString());
+                response.setErrorMsg(e.toString());
                 log.error("RPC Server handle request error", e);
             }
             ctx.writeAndFlush(response);

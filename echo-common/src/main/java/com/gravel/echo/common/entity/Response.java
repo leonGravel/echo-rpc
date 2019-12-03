@@ -14,6 +14,6 @@ import lombok.Data;
 public class Response {
     private String requestId;
     private int code;
-    private String error_msg;
+    private String errorMsg;
     private Object data;
 }

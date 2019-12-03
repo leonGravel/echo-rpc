@@ -2,8 +2,8 @@ package com.gravel.echo.client;
 
 import com.alibaba.fastjson.JSONArray;
 import com.gravel.echo.client.conection.ConnectManage;
-import com.gravel.echo.common.codec.JSONDecoder;
-import com.gravel.echo.common.codec.JSONEncoder;
+import com.gravel.echo.common.codec.json.JSONDecoder;
+import com.gravel.echo.common.codec.json.JSONEncoder;
 import com.gravel.echo.common.entity.Request;
 import com.gravel.echo.common.entity.Response;
 import io.netty.bootstrap.Bootstrap;
@@ -75,7 +75,7 @@ public class NettyClient {
         }else{
             Response res = new Response();
             res.setCode(1);
-            res.setError_msg("未正确连接到服务器.请检查相关配置信息!");
+            res.setErrorMsg("未正确连接到服务器.请检查相关配置信息!");
             return JSONArray.toJSONString(res);
         }
     }

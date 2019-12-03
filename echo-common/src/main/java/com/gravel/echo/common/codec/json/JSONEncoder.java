@@ -1,4 +1,4 @@
-package com.gravel.echo.common.codec;
+package com.gravel.echo.common.codec.json;
 
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
