@@ -39,22 +39,11 @@ public class RpcFactory<T> implements InvocationHandler {
         request.setParameterTypes(method.getParameterTypes());
         request.setId(UUID.randomUUID().toString());
 
-        Object result = client.send(request);
-        Class<?> returnType = method.getReturnType();
+        Response response = client.send(request);
 
-        Response response = SerializerUtil.parseObject(result.toString(), Response.class);
         if (response.getCode()==1){
             throw new Exception(response.getErrorMsg());
         }
-        if (returnType.isPrimitive() || String.class.isAssignableFrom(returnType)){
-            return response.getData();
-        }else if (Collection.class.isAssignableFrom(returnType)){
-            return SerializerUtil.parseObject(response.getData().toString(),Object.class);
-        }else if(Map.class.isAssignableFrom(returnType)){
-            return SerializerUtil.parseObject(response.getData().toString(),Map.class);
-        }else{
-            Object data = response.getData();
-            return SerializerUtil.parseObject(data.toString(), returnType);
-        }
+        return response.getData();
     }
 }

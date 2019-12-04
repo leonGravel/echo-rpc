@@ -3,6 +3,8 @@ package com.gravel.echo.server;
 import com.gravel.echo.common.annotation.RpcService;
 import com.gravel.echo.common.codec.json.JSONDecoder;
 import com.gravel.echo.common.codec.json.JSONEncoder;
+import com.gravel.echo.common.codec.kryo.KryoDecoder;
+import com.gravel.echo.common.codec.kryo.KryoEncoder;
 import com.gravel.echo.server.registry.ServiceRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -78,8 +80,8 @@ public class NettyServer implements ApplicationContextAware, InitializingBean {
                             protected void initChannel(SocketChannel channel) {
                                 ChannelPipeline pipeline = channel.pipeline();
                                 pipeline.addLast(new IdleStateHandler(0, 0, 60));
-                                pipeline.addLast(new JSONEncoder());
-                                pipeline.addLast(new JSONDecoder());
+                                pipeline.addLast(new KryoDecoder());
+                                pipeline.addLast(new KryoEncoder());
                                 pipeline.addLast(handler);
                             }
                         });

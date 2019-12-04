@@ -1,5 +1,7 @@
 package com.gravel.echo.example.service;
 
+import java.util.List;
+
 /**
  * @ClassName HelloService
  * @Description: TODO
@@ -8,5 +10,5 @@ package com.gravel.echo.example.service;
  * @Version V1.0
  **/
 public interface HelloService {
-    public String saySomething(String something);
+    public List<String> saySomething(List<String> something);
 }

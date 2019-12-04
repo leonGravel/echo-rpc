@@ -5,10 +5,7 @@ import com.gravel.echo.client.conection.ConnectManage;
 import com.gravel.echo.common.entity.Request;
 import com.gravel.echo.common.entity.Response;
 import com.gravel.echo.common.utils.SerializerUtil;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.*;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +26,7 @@ import java.util.concurrent.SynchronousQueue;
 @Slf4j
 @Component
 @ChannelHandler.Sharable
-public class NettyClientHandler extends ChannelInboundHandlerAdapter {
+public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
 
     @Autowired
     NettyClient client;
@@ -38,7 +35,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     ConnectManage connectManage;
 
 
-    private ConcurrentHashMap<String, SynchronousQueue<Object>> queueMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, SynchronousQueue<Response>> queueMap = new ConcurrentHashMap<>();
 
     public void channelActive(ChannelHandlerContext ctx) {
         log.info("已连接到RPC服务器.{}", ctx.channel().remoteAddress());
@@ -51,16 +48,17 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         connectManage.removeChannel(ctx.channel());
     }
 
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        Response response = SerializerUtil.parseObject(msg.toString(), Response.class);
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, Response response) throws Exception {
         String requestId = response.getRequestId();
-        SynchronousQueue<Object> queue = queueMap.get(requestId);
+        SynchronousQueue<Response> queue = queueMap.get(requestId);
         queue.put(response);
         queueMap.remove(requestId);
     }
 
-    public SynchronousQueue<Object> sendRequest(Request request, Channel channel) {
-        SynchronousQueue<Object> queue = new SynchronousQueue<>();
+
+    public SynchronousQueue<Response> sendRequest(Request request, Channel channel) {
+        SynchronousQueue<Response> queue = new SynchronousQueue<>();
         queueMap.put(request.getId(), queue);
         channel.writeAndFlush(request);
         return queue;
@@ -85,4 +83,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         log.info("RPC通信服务器发生异常.{}", cause);
         ctx.channel().close();
     }
+
+
+
 }

@@ -48,9 +48,4 @@ public class KryoSerializer {
         return kryo.readClassAndObject(input);
     }
 
-    public static <T> T parseObject(String text, Class<T> clazz) {
-        Input input = new Input(text.getBytes());
-        Kryo kryo = factory.getKryo();
-        return kryo.readObjectOrNull(input, clazz);
-    }
 }

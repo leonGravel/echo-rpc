@@ -2,6 +2,9 @@ package com.gravel.echo.example.service;
 
 import com.gravel.echo.common.annotation.RpcService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @ClassName HelloServiceImpl
  * @Description: TODO
@@ -13,8 +16,8 @@ import com.gravel.echo.common.annotation.RpcService;
 public class HelloServiceImpl implements HelloService {
 
     @Override
-    public String saySomething(String something) {
+    public List<String> saySomething(List<String> something) {
         System.out.println("调用成功：---" + something);
-        return something;
+        return something.stream().map(e->e=e+1111).collect(Collectors.toList());
     }
 }

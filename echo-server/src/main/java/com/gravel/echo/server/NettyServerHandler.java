@@ -1,19 +1,15 @@
 package com.gravel.echo.server;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.gravel.echo.common.entity.Request;
 import com.gravel.echo.common.entity.Response;
-import com.gravel.echo.common.utils.SerializerUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -25,7 +21,7 @@ import java.util.Map;
  **/
 @Slf4j
 @ChannelHandler.Sharable
-public class NettyServerHandler extends ChannelInboundHandlerAdapter {
+public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
 
     private final Map<String, Object> serviceMap;
 
@@ -45,8 +41,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        Request request = SerializerUtil.parseObject(msg.toString(), Request.class);
+    public void channelRead0(ChannelHandlerContext ctx, Request request) {
 
         if ("heartBeat".equals(request.getMethodName())) {
             log.info("客户端心跳信息..." + ctx.channel().remoteAddress());
@@ -86,41 +81,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
             Method method = serviceClass.getMethod(methodName, parameterTypes);
             method.setAccessible(true);
-            return method.invoke(serviceBean, getParameters(parameterTypes, parameters));
+            return method.invoke(serviceBean, parameters);
         } else {
             throw new Exception("未找到服务接口,请检查配置!:" + className + "#" + request.getMethodName());
         }
     }
 
-    /**
-     * 获取参数列表
-     *
-     * @param parameterTypes
-     * @param parameters
-     * @return
-     */
-    private Object[] getParameters(Class<?>[] parameterTypes, Object[] parameters) {
-        if (parameters == null || parameters.length == 0) {
-            return parameters;
-        } else {
-            Object[] newParameters = new Object[parameters.length];
-            for (int i = 0; i < parameters.length; i++) {
-                Class<?> paramType = parameterTypes[i];
-
-                // 类型判断，转为不同的对象
-                if (paramType.isPrimitive() || String.class.isAssignableFrom(paramType)) {
-                    newParameters[i] = parameters[i];
-                } else if (Collection.class.isAssignableFrom(paramType)) {
-                    newParameters[i] = JSONArray.parseArray(parameters[i].toString(), Object.class);
-                } else if (Map.class.isAssignableFrom(paramType)) {
-                    newParameters[i] = SerializerUtil.parseObject(parameters[i].toString(), Map.class);
-                } else {
-                    newParameters[i] = SerializerUtil.parseObject(parameters[i].toString(), parameterTypes[i]);
-                }
-            }
-            return newParameters;
-        }
-    }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {

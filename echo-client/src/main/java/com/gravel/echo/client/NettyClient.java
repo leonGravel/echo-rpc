@@ -1,9 +1,8 @@
 package com.gravel.echo.client;
 
-import com.alibaba.fastjson.JSONArray;
 import com.gravel.echo.client.conection.ConnectManage;
-import com.gravel.echo.common.codec.json.JSONDecoder;
-import com.gravel.echo.common.codec.json.JSONEncoder;
+import com.gravel.echo.common.codec.kryo.KryoDecoder;
+import com.gravel.echo.common.codec.kryo.KryoEncoder;
 import com.gravel.echo.common.entity.Request;
 import com.gravel.echo.common.entity.Response;
 import io.netty.bootstrap.Bootstrap;
@@ -42,8 +41,8 @@ public class NettyClient {
     ConnectManage connectManage;
 
 
-    public NettyClient(){
-         Bootstrap handler = bootstrap.group(group).
+    public NettyClient() {
+        Bootstrap handler = bootstrap.group(group).
                 channel(NioSocketChannel.class).
                 option(ChannelOption.TCP_NODELAY, true).
                 option(ChannelOption.SO_KEEPALIVE, true).
@@ -52,33 +51,33 @@ public class NettyClient {
                     protected void initChannel(SocketChannel channel) throws Exception {
                         ChannelPipeline pipeline = channel.pipeline();
                         pipeline.addLast(new IdleStateHandler(0, 0, 30));
-                        pipeline.addLast(new JSONEncoder());
-                        pipeline.addLast(new JSONDecoder());
+                        pipeline.addLast(new KryoDecoder());
+                        pipeline.addLast(new KryoEncoder());
                         pipeline.addLast("handler", clientHandler);
                     }
                 });
     }
 
     @PreDestroy
-    public void destroy(){
+    public void destroy() {
         log.info("RPC客户端退出,释放资源!");
         group.shutdownGracefully();
     }
 
-    public Object send(Request request) throws InterruptedException{
+    public Response send(Request request) throws InterruptedException {
 
         Channel channel = connectManage.chooseChannel();
-        if (channel!=null && channel.isActive()) {
-            SynchronousQueue<Object> queue = clientHandler.sendRequest(request,channel);
-            Object result = queue.take();
-            return JSONArray.toJSONString(result);
-        }else{
+        if (channel != null && channel.isActive()) {
+            SynchronousQueue<Response> queue = clientHandler.sendRequest(request, channel);
+            return queue.take();
+        } else {
             Response res = new Response();
             res.setCode(1);
             res.setErrorMsg("未正确连接到服务器.请检查相关配置信息!");
-            return JSONArray.toJSONString(res);
+            return res;
         }
     }
+
     public Channel doConnect(SocketAddress address) throws InterruptedException {
         ChannelFuture future = bootstrap.connect(address);
         return future.sync().channel();

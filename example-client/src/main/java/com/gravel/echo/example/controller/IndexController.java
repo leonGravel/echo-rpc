@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 /**
  * @ClassName IndexController
  * @Description: TODO
@@ -20,8 +24,12 @@ public class IndexController {
 
     @RequestMapping("index")
     @ResponseBody
-    public String index(){
-
-        return  helloService.saySomething("sdfsdfsdf");
+    public List<String> index(){
+        List<String> s = new ArrayList<>();
+        s.add("234");
+        s.add("234");
+        s.add("234");
+        s.add("234");
+        return  helloService.saySomething(s);
     }
 }
