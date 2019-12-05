@@ -1,11 +1,9 @@
 package com.gravel.echo.server;
 
 import com.gravel.echo.common.annotation.RpcService;
-import com.gravel.echo.common.codec.json.JSONDecoder;
-import com.gravel.echo.common.codec.json.JSONEncoder;
 import com.gravel.echo.common.codec.kryo.KryoDecoder;
 import com.gravel.echo.common.codec.kryo.KryoEncoder;
-import com.gravel.echo.server.registry.ServiceRegistry;
+import com.gravel.echo.common.zookeeper.ZkManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -44,7 +42,7 @@ public class NettyServer implements ApplicationContextAware, InitializingBean {
     private String serverAddress;
 
     @Autowired
-    ServiceRegistry registry;
+    ZkManager registry;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

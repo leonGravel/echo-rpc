@@ -1,4 +1,4 @@
-package com.gravel.echo.server.registry;
+package com.gravel.echo.common.zookeeper;
 
 import com.gravel.echo.common.constants.EchoConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * @ClassName ServiceRegistry
+ * @ClassName zkManager
  * @Description: TODO
  * @Author gravel
- * @Date 2019/11/28
+ * @Date 2019/12/5
  * @Version V1.0
  **/
 @Slf4j
 @Component
-public class ServiceRegistry {
+public class ZkManager {
     @Value("${registry.address}")
     private String registryAddress;
 
@@ -31,7 +31,7 @@ public class ServiceRegistry {
     }
 
     //连接zookeeper
-    private ZkClient connectServer() {
+    public ZkClient connectServer() {
         return new ZkClient(registryAddress, 20000, 20000);
     }
 

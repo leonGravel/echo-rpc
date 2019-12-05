@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @ClassName ConnectManage
- * @Description: TODO
+ * @Description: 客户端链接管理
  * @Author gravel
  * @Date 2019/11/28
  * @Version V1.0

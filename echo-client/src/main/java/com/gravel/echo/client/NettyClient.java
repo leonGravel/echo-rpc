@@ -64,6 +64,12 @@ public class NettyClient {
         group.shutdownGracefully();
     }
 
+    /**
+     * 发送远程调用请求
+     * @param request
+     * @return
+     * @throws InterruptedException
+     */
     public Response send(Request request) throws InterruptedException {
 
         Channel channel = connectManage.chooseChannel();

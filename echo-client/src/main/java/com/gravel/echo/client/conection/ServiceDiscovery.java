@@ -2,10 +2,10 @@ package com.gravel.echo.client.conection;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gravel.echo.common.constants.EchoConstants;
+import com.gravel.echo.common.zookeeper.ZkManager;
 import lombok.extern.slf4j.Slf4j;
 import org.I0Itec.zkclient.ZkClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,25 +23,19 @@ import java.util.List;
 @Component
 public class ServiceDiscovery {
 
-    @Value("${registry.address}")
-    private String registryAddress;
     @Autowired
     ConnectManage connectManage;
 
+    @Autowired
+    ZkManager zkManager;
     // 服务地址列表
     private volatile List<String> addressList = new ArrayList<>();
     private ZkClient client;
 
-
     @PostConstruct
     public void init() {
-        client = connectServer();
+        client = zkManager.connectServer();
         watchNode(client);
-    }
-
-    //连接zookeeper
-    private ZkClient connectServer() {
-        return new ZkClient(registryAddress, 30000, 30000);
     }
 
     //监听子节点数据变化
