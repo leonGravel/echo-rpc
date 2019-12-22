@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @ClassName zkManager
- * @Description: TODO
+ * @Description: zookeeper 管理类
  * @Author gravel
  * @Date 2019/12/5
  * @Version V1.0
@@ -21,6 +21,11 @@ public class ZkManager {
     @Value("${registry.address}")
     private String registryAddress;
 
+
+    /**
+     * 注册zookeeper
+     * @param data
+     */
     public void register(String data) {
         if (data == null) {
             return;
@@ -30,12 +35,18 @@ public class ZkManager {
         createNode(client, data);
     }
 
-    //连接zookeeper
+    /**
+     * 连接zookeeper
+     * @return
+     */
     public ZkClient connectServer() {
         return new ZkClient(registryAddress, 20000, 20000);
     }
 
-    //创建根目录/rpc
+    /**
+     * 创建根目录
+     * @param client
+     */
     private void AddRootNode(ZkClient client) {
         boolean exists = client.exists(EchoConstants.ZK_REGISTRY_PATH);
         if (!exists) {
@@ -44,7 +55,11 @@ public class ZkManager {
         }
     }
 
-    //在/rpc根目录下，创建临时顺序子节点
+    /**
+     * 在根目录下，创建临时顺序子节点
+     * @param client
+     * @param data
+     */
     private void createNode(ZkClient client, String data) {
         String path = client.create(EchoConstants.ZK_REGISTRY_PATH + "/provider", data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
         log.info("创建zookeeper数据节点 ({} => {})", path, data);

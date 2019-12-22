@@ -19,7 +19,7 @@ import java.io.IOException;
  **/
 @Slf4j
 public class KryoSerializer {
-    private static final ThreadLocalKryoFactory factory = new ThreadLocalKryoFactory();
+    private static final ThreadLocalAbstractKryoFactory factory = new ThreadLocalAbstractKryoFactory();
 
     public static void serialize(Object object, ByteBuf out) {
         Kryo kryo = factory.getKryo();

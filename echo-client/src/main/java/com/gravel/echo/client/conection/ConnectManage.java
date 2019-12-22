@@ -30,10 +30,23 @@ public class ConnectManage {
     NettyClient nettyClient;
 
 
+    /**
+     * 轮询节点
+     */
     private AtomicInteger roundRobin = new AtomicInteger(0);
+    /**
+     * 保存所有的客户端channel信息，读多写少，所以用COW
+     */
     private CopyOnWriteArrayList<Channel> channels = new CopyOnWriteArrayList<>();
+    /**
+     * 服务端节点信息
+     */
     private Map<SocketAddress, Channel> channelNodes = new ConcurrentHashMap<>();
 
+    /**
+     * 通过轮询方式选择客户端通道
+     * @return
+     */
     public Channel chooseChannel() {
         if (channels.size() > 0) {
             int size = channels.size();
@@ -49,8 +62,8 @@ public class ConnectManage {
             log.error("没有可用的服务器节点, 全部服务节点已关闭!");
             for (final Channel channel : channels) {
                 SocketAddress remotePeer = channel.remoteAddress();
-                Channel handler_node = channelNodes.get(remotePeer);
-                handler_node.close();
+                Channel handlerNode = channelNodes.get(remotePeer);
+                handlerNode.close();
             }
             channels.clear();
             channelNodes.clear();

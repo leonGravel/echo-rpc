@@ -8,6 +8,7 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -58,7 +59,7 @@ public class ClassPathRpcScanner extends ClassPathBeanDefinitionScanner {
         for (BeanDefinitionHolder holder : beanDefinitions) {
 
             definition = (GenericBeanDefinition) holder.getBeanDefinition();
-            definition.getConstructorArgumentValues().addGenericArgumentValue(definition.getBeanClassName());
+            definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
             definition.setBeanClass(this.rpcFactoryBean.getClass());
 
             definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);

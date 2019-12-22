@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @ClassName Request
- * @Description: TODO
+ * @Description: 客户端请求实体类
  * @Author gravel
  * @Date 2019/11/28
  * @Version V1.0

@@ -22,16 +22,12 @@ import java.util.regex.Pattern;
  * @Date 2019/12/3
  * @Version V1.0
  **/
-public abstract class KryoFactory {
+public abstract class AbstractKryoFactory {
 
-    private final static KryoFactory threadFactory = new ThreadLocalKryoFactory();
+    private final static AbstractKryoFactory THREAD_FACTORY = new ThreadLocalAbstractKryoFactory();
 
-    protected KryoFactory() {
-
-    }
-
-    public static KryoFactory getDefaultFactory() {
-        return threadFactory;
+    public static AbstractKryoFactory getDefaultFactory() {
+        return THREAD_FACTORY;
     }
 
     protected Kryo createKryo() {
@@ -41,7 +37,7 @@ public abstract class KryoFactory {
         kryo.register(Response.class);
         kryo.register(Request.class);
 
-        kryo.register(Arrays.asList("").getClass(), new ArraysAsListSerializer());
+        kryo.register(Collections.singletonList("").getClass(), new ArraysAsListSerializer());
         kryo.register(GregorianCalendar.class, new GregorianCalendarSerializer());
         kryo.register(InvocationHandler.class, new JdkProxySerializer());
         kryo.register(BigDecimal.class, new DefaultSerializers.BigDecimalSerializer());

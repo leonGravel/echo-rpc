@@ -29,6 +29,11 @@ public class RpcFactory<T> implements MethodInterceptor {
     NettyClient client;
 
 
+    /**
+     * 使用CGlib创建代理类
+     * @param clazz
+     * @return
+     */
     public T createCglibProxy(Class<?> clazz) {
         // cglib 中常用的一个类，可以代理类和接口
         Enhancer enhancer = new Enhancer();

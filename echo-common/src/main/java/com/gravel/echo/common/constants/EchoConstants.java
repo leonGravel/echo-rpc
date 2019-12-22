@@ -8,6 +8,9 @@ package com.gravel.echo.common.constants;
  * @Version V1.0
  **/
 public class EchoConstants {
+    /**
+     * 服务端在zk上的注册路径
+     */
     public static final String ZK_REGISTRY_PATH = "/echo-rpc";
     public static final String SERIAL_TYPE_JSON = "json";
     public static final String SERIAL_TYPE_KRYO = "kryo";

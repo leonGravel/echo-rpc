@@ -59,6 +59,7 @@ public class NettyServer implements ApplicationContextAware, InitializingBean {
         log.info("已加载全部服务接口:{}", serviceMap);
     }
 
+    @Override
     public void afterPropertiesSet() {
         start();
     }
@@ -75,6 +76,7 @@ public class NettyServer implements ApplicationContextAware, InitializingBean {
                         childOption(ChannelOption.TCP_NODELAY, true).
                         childHandler(new ChannelInitializer<SocketChannel>() {
                             //创建NIOSocketChannel成功后，在进行初始化时，将它的ChannelHandler设置到ChannelPipeline中，用于处理网络IO事件
+                            @Override
                             protected void initChannel(SocketChannel channel) {
                                 ChannelPipeline pipeline = channel.pipeline();
                                 pipeline.addLast(new IdleStateHandler(0, 0, 60));

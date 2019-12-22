@@ -1,5 +1,6 @@
 package com.gravel.echo.client.rpc;
 
+import com.gravel.echo.common.constants.EchoConstants;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -10,7 +11,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * @ClassName RpcScannerConfigurer
- * @Description: TODO
+ * @Description: 扫描客户端需要代理的类
  * @Author gravel
  * @Date 2019/11/28
  * @Version V1.0
@@ -18,16 +19,13 @@ import org.springframework.util.StringUtils;
 @Component
 public class RpcScannerConfigurer implements BeanDefinitionRegistryPostProcessor {
 
-    private String basePackage = "com.gravel.echo.example";
-
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
         ClassPathRpcScanner scanner = new ClassPathRpcScanner(beanDefinitionRegistry);
 
         scanner.registerFilters();
-        scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
+        scanner.scan(StringUtils.tokenizeToStringArray(EchoConstants.BASE_PACKAGE, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
     }
-
 
 
     @Override
