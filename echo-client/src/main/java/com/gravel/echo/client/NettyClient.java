@@ -21,7 +21,7 @@ import java.util.concurrent.SynchronousQueue;
 
 /**
  * @ClassName NettyClient
- * @Description: TODO
+ * @Description: ECHO 客户端
  * @Author gravel
  * @Date 2019/11/28
  * @Version V1.0
@@ -29,7 +29,6 @@ import java.util.concurrent.SynchronousQueue;
 @Component
 @Slf4j
 public class NettyClient {
-
 
     private EventLoopGroup group = new NioEventLoopGroup(1);
     private Bootstrap bootstrap = new Bootstrap();
@@ -42,7 +41,7 @@ public class NettyClient {
 
 
     public NettyClient() {
-        Bootstrap handler = bootstrap.group(group).
+        bootstrap.group(group).
                 channel(NioSocketChannel.class).
                 option(ChannelOption.TCP_NODELAY, true).
                 option(ChannelOption.SO_KEEPALIVE, true).
@@ -51,6 +50,7 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
                         ChannelPipeline pipeline = channel.pipeline();
+                        // 设置心跳
                         pipeline.addLast(new IdleStateHandler(0, 0, 30));
                         pipeline.addLast(new KryoDecoder());
                         pipeline.addLast(new KryoEncoder());

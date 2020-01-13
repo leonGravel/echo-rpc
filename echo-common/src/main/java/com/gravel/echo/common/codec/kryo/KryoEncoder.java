@@ -6,7 +6,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
  * @ClassName KryoEncoder
- * @Description: TODO
+ * @Description: 加密
  * @Author gravel
  * @Date 2019/12/3
  * @Version V1.0

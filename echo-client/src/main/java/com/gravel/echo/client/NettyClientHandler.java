@@ -33,7 +33,9 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
     @Autowired
     ConnectManage connectManage;
 
-    // 用于存储返回结果
+    /**
+     * 用于存储返回结果
+     */
     private ConcurrentHashMap<String, SynchronousQueue<Response>> queueMap = new ConcurrentHashMap<>();
 
     @Override
@@ -87,6 +89,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
 
     /**
      * 发动请求，并从 channelRead0 中获取返回结果
+     *
      * @param request
      * @param channel
      * @return

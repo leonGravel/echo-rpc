@@ -24,11 +24,6 @@ import java.util.regex.Pattern;
  **/
 public abstract class AbstractKryoFactory {
 
-    private final static AbstractKryoFactory THREAD_FACTORY = new ThreadLocalAbstractKryoFactory();
-
-    public static AbstractKryoFactory getDefaultFactory() {
-        return THREAD_FACTORY;
-    }
 
     protected Kryo createKryo() {
 
