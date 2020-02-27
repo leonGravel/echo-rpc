@@ -17,7 +17,7 @@ import java.util.List;
  **/
 public class JSONEncoder extends MessageToMessageEncoder {
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, Object msg, List out){
+    protected void encode(ChannelHandlerContext channelHandlerContext, Object msg, List out) {
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         byte[] bytes;
         bytes = JSON.toJSONBytes(msg);

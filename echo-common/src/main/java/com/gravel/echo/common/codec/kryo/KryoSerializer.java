@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * @ClassName KryoSerializer
- * @Description: TODO
+ * @Description: kryo 序列化
  * @Author gravel
  * @Date 2019/12/3
  * @Version V1.0
@@ -21,7 +21,8 @@ import java.io.IOException;
 public class KryoSerializer {
     private static final ThreadLocalAbstractKryoFactory factory = new ThreadLocalAbstractKryoFactory();
 
-    public static void serialize(Object object, ByteBuf out) {
+
+    public static byte[] serialize(Object object) {
         Kryo kryo = factory.getKryo();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Output output = new Output(baos);
@@ -36,16 +37,16 @@ public class KryoSerializer {
         } catch (IOException e) {
             log.error("kyro 序列化失败:{0}", e);
         }
-        out.writeBytes(b);
+        return b;
     }
 
-    public static Object deserialize(ByteBuf out) {
-        if (out == null) {
+
+    public static Object deserialize(byte[] in) {
+        if (in == null) {
             return null;
         }
-        Input input = new Input(new ByteBufInputStream(out));
+        Input input = new Input(in);
         Kryo kryo = factory.getKryo();
         return kryo.readClassAndObject(input);
     }
-
 }

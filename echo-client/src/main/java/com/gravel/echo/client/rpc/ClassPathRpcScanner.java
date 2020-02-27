@@ -67,6 +67,7 @@ public class ClassPathRpcScanner extends ClassPathBeanDefinitionScanner {
         }
     }
 
+    @Override
     protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
         return beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().isIndependent();
     }
