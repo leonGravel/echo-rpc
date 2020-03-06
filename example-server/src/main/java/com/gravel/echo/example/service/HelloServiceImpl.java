@@ -18,6 +18,6 @@ public class HelloServiceImpl implements HelloService {
     @Override
     public List<String> saySomething(List<String> something) {
         System.out.println("调用成功：---" + something);
-        return something.stream().map(e->e=e+1111).collect(Collectors.toList());
+        return something.stream().map(e -> e = "rpc--调用成功！" + e).collect(Collectors.toList());
     }
 }

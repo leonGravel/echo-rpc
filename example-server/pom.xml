@@ -8,7 +8,7 @@
 		<version>2.2.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.gravel.echo</groupId>
+	<groupId>com.gravel.echo.example</groupId>
 	<artifactId>server-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>example-server</name>
